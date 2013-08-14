@@ -336,6 +336,8 @@ public class FilterListView {
 
       if (winner.size() > 0 || league.size() > 0 || matchup.size() > 0 || submission.size() > 0 || rating.size() > 0)
         filtering = true;
+      else
+        filtering = false;
       //System.err.println(winner);
     }
 
