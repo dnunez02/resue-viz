@@ -46,7 +46,7 @@ void draw() {
         front.rect(x, y, SPACING, SPACING, p);
       } 
       else {
-        games[i].render(front, x, y, SPACING);
+        games[i].render(front, x, y, SPACING, p);
       }
       x += SPACING;
       if ( x + SPACING > width - START_ROW ) {
