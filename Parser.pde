@@ -90,11 +90,9 @@ public class Parser {
       if (lines[i].startsWith("["))
         continue;
       String[] colorChoice = split(lines[i], ",");
-      console.log("read for " + colorChoice[0]);
       colors[colorIndex] = color(int(colorChoice[1]), int(colorChoice[2]), int(colorChoice[3]));
       colorIndex++;
     }
-      console.log("finish config");
   }
 
   public int stringToLeague(String league) {
