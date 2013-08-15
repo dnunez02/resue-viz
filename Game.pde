@@ -188,7 +188,7 @@ public class Game {
     return is_isect;
   }
 
-  public void render(PGraphics pg, float x, float y, float spacing) {
+  public void render(PGraphics pg, float x, float y, float spacing, Parser p) {
     color c = p.colors[Parser.RATING_OFFSET + (rating - 1)];  
     pg.fill(c);
     pg.rect(x, y, spacing, spacing);
