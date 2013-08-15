@@ -43,7 +43,7 @@ void draw() {
     for (int i = 0; i < games.length; ++i) {
       if (!is_filtered(games[i])) {
         front.fill(50);
-        front.rect(x, y, SPACING, SPACING, p);
+        front.rect(x, y, SPACING, SPACING);
       } 
       else {
         games[i].render(front, x, y, SPACING, p);
