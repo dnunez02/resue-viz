@@ -27,20 +27,20 @@ void draw() {
     image(pg, 0, 0);
     redraw = true;
     return;
+  } else if(keyPressed) {
+    redraw = true;
   }
+  
+  background(255, 255, 255);
+  
   if (redraw) {
-    //System.err.println("Redrawing buffer");
     front.beginDraw();
     front.background(255); 
-
-    //flv.render();
 
     float x = START_ROW;
     float y = START_COL;
     Game []games = p.games;
     for (int i = 0; i < games.length; ++i) {
-      //int rating = games[i].rating;
-
       if (!is_filtered(games[i])) {
         front.fill(50);
         front.rect(x, y, SPACING, SPACING);
@@ -56,10 +56,8 @@ void draw() {
     }
     redraw = false;
     front.endDraw();
-  } else {
-    //System.err.println("Using buffer");
-     image(front, 0, 0); 
   }
+  image(front, 0, 0); 
   
   flv.render();
   float x = START_ROW;
@@ -72,7 +70,7 @@ void draw() {
       text(p.games[i].toString(), width/2, 3 * height / 4);
       rectMode(CENTER);
       strokeWeight(3);
-      p.games[i].render(x + (SPACING/2), y + (SPACING/2), SPACING * 2);
+      p.games[i].render(x + (SPACING/2), y + (SPACING/2), SPACING * 2, p);
       strokeWeight(1);
       rectMode(CORNER);
     }
