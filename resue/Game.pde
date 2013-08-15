@@ -137,22 +137,7 @@ public class Game {
     else if (str(winner).equals(str(PROTOSS))) s+= "Protoss";  
     else if (str(winner).equals(str(ZERG))) s+= "Zerg";
     else s += "Unknown";
-    /*
-    switch(winner) {
-    case TERRAN: 
-      s+= "Terran"; 
-      break;
-    case PROTOSS: 
-      s+= "Protoss"; 
-      break;
-    case ZERG: 
-      s+= "Zerg"; 
-      break;
-    default: 
-      s+= "Unknown"; 
-      break;
-    }
-*/
+
     s += "\nTime: " + str(hour) + ":" + str(minute) + ":" + str(second); 
 
     s += "\nRating: " + str(rating);
@@ -187,111 +172,8 @@ public class Game {
     return s;
   }
 
-  public void render(float x, float y, float spacing) {
-    color c = color(0, 0, 0);
-    switch(rating) {
-    case 1: 
-      c = color(215, 25, 28); 
-      break;
-    case 2: 
-      c = color(253, 174, 97); 
-      break;
-    case 3: 
-      c = color(255, 255, 191); 
-      break;
-    case 4: 
-      c = color(166, 217, 106); 
-      break;
-    case 5: 
-      c = color(26, 150, 65); 
-      break;
-    }
-
-    if (keyPressed && key == 'w') {
-      //      switch(winner) {
-      //      case Game.TERRAN: 
-      //        c = color(124, 182, 232); 
-      //        break;
-      //      case Game.PROTOSS: 
-      //        c = color(255, 215, 0); 
-      //        break;
-      //      case Game.ZERG: 
-      //        c = color(153, 85, 187); 
-      //        break;
-      //      }
-      if (str(winner).equals(str(TERRAN)))  c = color(124, 182, 232); 
-      else if (str(winner).equals(str(PROTOSS))) c = color(255, 215, 0); 
-      else if (str(winner).equals(str(ZERG))) c = color(153, 85, 187);
-    }
-
-    if (keyPressed && key == 'm') {
-      switch(matchup) {
-      case Game.TvT:
-        c = color(55, 126, 184); 
-        break;
-      case Game.TvZ: 
-        c = color(77, 175, 74);
-        break;
-      case Game.TvP: 
-        c = color(228, 26, 28);
-        break;
-      case Game.ZvT: 
-        c = color(255, 127, 0); 
-        break;
-      case Game.ZvZ: 
-        c = color(152, 78, 163); 
-        break;
-      case Game.ZvP: 
-        c = color(166, 86, 40); 
-        break;
-      case Game.PvT: 
-        c = color(247, 129, 191); 
-        break;
-      case Game.PvZ: 
-        c = color(153, 153, 153); 
-        break;
-      case Game.PvP: 
-        c = color(255, 255, 51); 
-        break;
-      }
-    }
-
-    if (keyPressed && key == 'l') {
-      switch(league) {
-      case Game.BRONZE:
-        c = color(205, 127, 50); 
-        break;
-      case Game.SILVER: 
-        c = color(132, 132, 130);
-        break;
-      case Game.GOLD: 
-        c = color(255, 215, 0);
-        break;
-      case Game.PLATINUM: 
-        c = color(229, 228, 226);
-        break;
-      case Game.DIAMOND: 
-        c = color(185, 242, 255);
-        break;
-      case Game.MASTER: 
-        c = color(124, 182, 232);
-        break;
-      case Game.GRANDMASTER: 
-        c = color(255, 126, 0);
-        break;
-      }
-    }
-
-    if (keyPressed && key == 's') {
-      if (submission_type == Game.NANG)
-        c = color(22, 46, 164);
-      else if (submission_type == Game.WCF)
-        c = color(255, 182, 0);
-    }
-
-    //    if (is_isect)
-    //      fill(0);
-    //    else
+  public void render(float x, float y, float spacing, Parser p) {
+    color c = chooseColor(p);
     fill(c);
     rect(x, y, spacing, spacing);
   }
@@ -305,114 +187,37 @@ public class Game {
     is_isect = testId == id;
     return is_isect;
   }
-  
+
   public void render(PGraphics pg, float x, float y, float spacing) {
+    color c = p.colors[Parser.RATING_OFFSET + (rating - 1)];  
+    pg.fill(c);
+    pg.rect(x, y, spacing, spacing);
+  }
+  
+  public color chooseColor(Parser p){
     color c = color(0, 0, 0);
-    switch(rating) {
-    case 1: 
-      c = color(215, 25, 28); 
-      break;
-    case 2: 
-      c = color(253, 174, 97); 
-      break;
-    case 3: 
-      c = color(255, 255, 191); 
-      break;
-    case 4: 
-      c = color(166, 217, 106); 
-      break;
-    case 5: 
-      c = color(26, 150, 65); 
-      break;
-    }
+    c = p.colors[Parser.RATING_OFFSET + (rating - 1)];
 
     if (keyPressed && key == 'w') {
-      //      switch(winner) {
-      //      case Game.TERRAN: 
-      //        c = color(124, 182, 232); 
-      //        break;
-      //      case Game.PROTOSS: 
-      //        c = color(255, 215, 0); 
-      //        break;
-      //      case Game.ZERG: 
-      //        c = color(153, 85, 187); 
-      //        break;
-      //      }
-      if (str(winner).equals(str(TERRAN)))  c = color(124, 182, 232); 
-      else if (str(winner).equals(str(PROTOSS))) c = color(255, 215, 0); 
-      else if (str(winner).equals(str(ZERG))) c = color(153, 85, 187);
+      if (str(winner).equals(str(TERRAN)))  c = p.colors[Parser.RACE_OFFSET]; 
+      else if (str(winner).equals(str(PROTOSS))) c = p.colors[Parser.RACE_OFFSET + 1];
+      else if (str(winner).equals(str(ZERG))) c = p.colors[Parser.RACE_OFFSET + 2];
     }
 
     if (keyPressed && key == 'm') {
-      switch(matchup) {
-      case Game.TvT:
-        c = color(55, 126, 184); 
-        break;
-      case Game.TvZ: 
-        c = color(77, 175, 74);
-        break;
-      case Game.TvP: 
-        c = color(228, 26, 28);
-        break;
-      case Game.ZvT: 
-        c = color(255, 127, 0); 
-        break;
-      case Game.ZvZ: 
-        c = color(152, 78, 163); 
-        break;
-      case Game.ZvP: 
-        c = color(166, 86, 40); 
-        break;
-      case Game.PvT: 
-        c = color(247, 129, 191); 
-        break;
-      case Game.PvZ: 
-        c = color(153, 153, 153); 
-        break;
-      case Game.PvP: 
-        c = color(255, 255, 51); 
-        break;
-      }
+      c = p.colors[Parser.MATCHUP_OFFSET + matchup];
     }
 
     if (keyPressed && key == 'l') {
-      switch(league) {
-      case Game.BRONZE:
-        c = color(205, 127, 50); 
-        break;
-      case Game.SILVER: 
-        c = color(132, 132, 130);
-        break;
-      case Game.GOLD: 
-        c = color(255, 215, 0);
-        break;
-      case Game.PLATINUM: 
-        c = color(229, 228, 226);
-        break;
-      case Game.DIAMOND: 
-        c = color(185, 242, 255);
-        break;
-      case Game.MASTER: 
-        c = color(124, 182, 232);
-        break;
-      case Game.GRANDMASTER: 
-        c = color(255, 126, 0);
-        break;
-      }
+      c = p.colors[Parser.LEAGUE_OFFSET + league];
     }
 
     if (keyPressed && key == 's') {
-      if (submission_type == Game.NANG)
-        c = color(22, 46, 164);
-      else if (submission_type == Game.WCF)
-        c = color(255, 182, 0);
+      if (submission_type == Game.NANG) c = p.colors[Parser.SUBMISSION_OFFSET];
+      else if (submission_type == Game.WCF) c = p.colors[Parser.SUBMISSION_OFFSET + 1];
     }
-
-    //    if (is_isect)
-    //      fill(0);
-    //    else
-    pg.fill(c);
-    pg.rect(x, y, spacing, spacing);
+    
+    return c;
   }
 }
 

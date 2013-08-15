@@ -10,6 +10,13 @@ public class Parser {
 
   Game[] games;
   HashMap groups;
+  public color[] colors = null;
+  public static final int RATING_OFFSET = 0;
+  public static final int LEAGUE_OFFSET = 5;
+  public static final int RACE_OFFSET = 12;
+  public static final int SUBMISSION_OFFSET = 15;
+  public static final int MATCHUP_OFFSET = 17;
+
   public Parser(String filename) {
     String[] cs_lines = loadStrings(filename);
     games = new Game[cs_lines.length];
@@ -25,9 +32,9 @@ public class Parser {
       games[i] = new Game(stringToLeague(game[0]), stringToMatchup(game[1]), game[2].charAt(0), int(time[0]), int(time[1]), int(time[2]), int(game[4]), game[5].equals("WCF"), int(date[0]), int(date[1]), int(date[2]), stringToVersion(game[7]), int(game[8]), int(game[9]), int(game[10]), int(game[11]), game[12], i | 0xFF0000);
     }
 
-//    for (int i = 0; i < 413; ++i) {
-//      System.err.println(games[i]);
-//    }
+    //    for (int i = 0; i < 413; ++i) {
+    //      System.err.println(games[i]);
+    //    }
 
     groups = new HashMap();
     String[] list = new String[7];
@@ -62,7 +69,7 @@ public class Parser {
     list[0] = "NANG";
     list[1] = "WCF";
     groups.put("Submission Type", list);
-    
+
     list = new String[5];
     list[0] = "1";
     list[1] = "2";
@@ -70,6 +77,22 @@ public class Parser {
     list[3] = "4";
     list[4] = "5";
     groups.put("Rating", list);
+
+
+    readConfig();
+  }
+
+  public void readConfig() {
+    String[] lines = loadStrings("config");
+    colors = new color[5+7+3+2+9];
+    int colorIndex = 0;
+    for (int i = 0; i < lines.length; ++i) {
+      if (lines[i].startsWith("["))
+        continue;
+      String[] colorChoice = split(lines[i], ",");
+      colors[colorIndex] = color(int(colorChoice[1]), int(colorChoice[2]), int(colorChoice[3]));
+      colorIndex++;
+    }
   }
 
   public int stringToLeague(String league) {
