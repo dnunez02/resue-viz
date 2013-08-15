@@ -10,7 +10,7 @@ public class Parser {
 
   Game[] games;
   HashMap groups;
-  public color[] colors = null;
+  public color[] colors;
   public static final int RATING_OFFSET = 0;
   public static final int LEAGUE_OFFSET = 5;
   public static final int RACE_OFFSET = 12;
